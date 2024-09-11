@@ -2,20 +2,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 
-#from supervisedLearning import perform_supervised_learning
-#from ennesima import perform_supervised_learning
-from ennesima2 import perform_supervised_learning
-
-#from supORIG import perform_supervised_learning
-#from supProva import perform_supervised_learning
-
-#from unsupervisedLearning import perform_kmeans_clustering
-from unsupBIC import perform_kmeans_clustering
-from unsupEM import perform_em_clustering
-
-#from semanticIntegration import get_breast_cancer_knowledge, enrich_data_with_knowledge
-from provaSemantic import get_breast_cancer_knowledge, enrich_data_with_knowledge
-
+from supervisedLearning import perform_supervised_learning
+from unsupervisedLearning import perform_kmeans_clustering
+from semanticIntegration import get_breast_cancer_knowledge, enrich_data_with_knowledge
 from bayesianNetwork import create_bayesian_network
 
 
