@@ -20,7 +20,7 @@ def select_features(X, y, max_features=20):
         selector = SelectKBest(f_classif, k=n)
         X_selected = selector.fit_transform(X, y)
         
-        # Simple cross-validation to evaluate feature selection
+        # cross-validation per feature selection
         clf = RandomForestClassifier(random_state=42)
         cv_score = cross_validate(clf, X_selected, y, cv=5, scoring='accuracy')['test_score'].mean()
         
@@ -35,7 +35,7 @@ def select_features(X, y, max_features=20):
     return X_selected, selected_features
 
 def create_metrics_table(results_df):
-    plt.figure(figsize=(14, 8))  # Increased figure size to accommodate new metrics
+    plt.figure(figsize=(14, 8))
     ax = plt.subplot(111, frame_on=False)
     ax.xaxis.set_visible(False)
     ax.yaxis.set_visible(False)
@@ -72,7 +72,7 @@ def create_metrics_table(results_df):
                       loc='center')
     
     table.auto_set_font_size(False)
-    table.set_fontsize(8)  # Reduced font size to fit all metrics
+    table.set_fontsize(8)  
     table.scale(1.2, 1.5)
     
     plt.title("Model Performance Metrics", fontsize=16)
@@ -89,20 +89,17 @@ def perform_supervised_learning(X, y):
     print(f"Selected features: {selected_features}")
     print(f"Number of selected features: {len(selected_features)}")
     
-    # Correlation matrix
+    
     plt.figure(figsize=(12, 10))
     sns.heatmap(X_selected.corr(), annot=True, cmap='coolwarm', linewidths=0.5)
     plt.title('Correlation Matrix of Selected Features')
     plt.tight_layout()
     plt.show()
     
-    # Split the data
-    X_train, X_test, y_train, y_test = train_test_split(X_selected, y, test_size=0.2, random_state=42)
     
-    # Create preprocessing steps
+    X_train, X_test, y_train, y_test = train_test_split(X_selected, y, test_size=0.2, random_state=42)
     scaler = MinMaxScaler()
     
-    # Fit the scaler on the training data and transform both training and test data
     X_train_scaled = pd.DataFrame(scaler.fit_transform(X_train), columns=X_train.columns)
     X_test_scaled = pd.DataFrame(scaler.transform(X_test), columns=X_test.columns)
     X_train_scaled.to_csv('train.csv', index=False)
@@ -131,19 +128,15 @@ def perform_supervised_learning(X, y):
     for name, clf in classifiers.items():
         print(f"\nTraining and evaluating {name}...")
         
-        # Perform cross-validation on training data
         cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
         cv_results = cross_validate(clf, X_train_scaled, y_train, cv=cv, scoring=scoring, error_score='raise')
         
-        # Train on full training set and evaluate on test set
         clf.fit(X_train_scaled, y_train)
         y_pred = clf.predict(X_test_scaled)
         
-        # Create a 2x2 subplot for combined visualization
         fig, axs = plt.subplots(2, 2, figsize=(10, 14))
         fig.suptitle(f'Model Evaluation - {name}', fontsize=15, y=1.0)
         
-        # Confusion Matrix
         cm = metrics.confusion_matrix(y_test, y_pred)
         disp = metrics.ConfusionMatrixDisplay(cm, display_labels=['Benign', 'Malignant'])
         disp.plot(ax=axs[0, 0], cmap='YlOrRd', values_format='d')
@@ -151,7 +144,6 @@ def perform_supervised_learning(X, y):
         axs[0, 0].set_title('Confusion Matrix', fontsize=16)
         axs[0, 0].tick_params(axis='both', which='major', labelsize=12)
         
-        # Adjust confusion matrix position
         box = axs[0, 0].get_position()
         axs[0, 0].set_position([box.x0 - 0.05, box.y0, box.width * 0.6, box.height * 0.6])
         
@@ -169,7 +161,6 @@ def perform_supervised_learning(X, y):
         axs[0, 1].legend(loc="lower right", fontsize=12)
         axs[0, 1].tick_params(axis='both', which='major', labelsize=10)
         
-        # Adjust ROC curve position
         box = axs[0, 1].get_position()
         axs[0, 1].set_position([box.x0 + 0.05, box.y0, box.width * 0.9, box.height * 0.9])
         
@@ -188,7 +179,6 @@ def perform_supervised_learning(X, y):
         axs[1, 0].plot(train_sizes, train_scores_mean, 'o-', color="r", label="Training score")
         axs[1, 0].plot(train_sizes, test_scores_mean, 'o-', color="g", label="Cross-validation score")
         
-        # Reduce tick size and adjust layout
         axs[1, 0].set_xlabel("Training examples", fontsize=10)
         axs[1, 0].set_ylabel("Score", fontsize=10)
         axs[1, 0].set_title("Learning Curve", fontsize=14)
@@ -199,7 +189,6 @@ def perform_supervised_learning(X, y):
         box = axs[1, 0].get_position()
         axs[1, 0].set_position([box.x0, box.y0 + 0.05, box.width * 0.9, box.height * 0.75])
         
-        # Add text summary in the fourth subplot
         summary_text = (
             f"Model: {name}\n\n"
             f"Test Accuracy: {accuracy_score(y_test, y_pred):.4f}\n\n"
