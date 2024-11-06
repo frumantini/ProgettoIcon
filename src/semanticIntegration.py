@@ -7,8 +7,8 @@ def get_breast_cancer_knowledge():
     ontology_path = os.path.join(os.path.dirname(__file__), "BCGO.owl")
     g.parse(ontology_path, format="xml")
     
-    print("Ontology loaded successfully")
-    print("Number of triples in the ontology:", len(g))
+    print("Ontologia caricata con successo")
+    print("Numero di triple presenti:", len(g))
 
     # Estrazione di classi e proprietà dall'ontologia
     classes = list(g.subjects(RDF.type, OWL.Class))
@@ -20,8 +20,8 @@ def get_breast_cancer_knowledge():
         "properties": properties
     }
 
-    print(f"Number of classes in the ontology: {len(classes)}")
-    print(f"Number of properties in the ontology: {len(properties)}")
+    print(f"Numero di classi presenti nell'ontologia: {len(classes)}")
+    print(f"Numero di proprietà presenti nell'ontologia: {len(properties)}")
 
     return knowledge
 
