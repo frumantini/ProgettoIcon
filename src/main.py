@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 
 from supervisedLearning import supervised_learning
-from unsupervisedLearning import perform_kmeans_clustering
+from unsupervisedLearning import kmeans_clustering
 from semanticIntegration import get_breast_cancer_knowledge, enrich_data_with_knowledge
 from bayesianNetwork import create_bayesian_network
 
@@ -65,7 +65,7 @@ X_selected, y = supervised_learning(X_enriched, y)
 '''print(X_selected.isnull().sum())
 X_selected.to_csv('supervisionato.csv', index=False)'''
 
-X_clustered = perform_kmeans_clustering(X_selected)
+X_clustered = kmeans_clustering(X_selected)
 #X_clustered_em = perform_em_clustering(X_selected)
 
 '''print(X_clustered.isnull().sum())
