@@ -5,7 +5,7 @@ from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from sklearn.mixture import GaussianMixture
 
-def perform_kmeans_clustering(X):
+def kmeans_clustering(X):
     print("\nAnalisi di clustering non supervisionato:")
     print("Scopo: Identificare potenziali sottotipi di cancro al seno basati sulle caratteristiche del tumore.")
     
