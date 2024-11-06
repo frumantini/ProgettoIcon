@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 
-from supervisedLearning import perform_supervised_learning
+from supervisedLearning import supervised_learning
 from unsupervisedLearning import perform_kmeans_clustering
 from semanticIntegration import get_breast_cancer_knowledge, enrich_data_with_knowledge
 from bayesianNetwork import create_bayesian_network
@@ -17,9 +17,8 @@ def preprocess_data(data):
     if 'target' in data.columns:
         data['target'] = data['target'].map({'M': 1, 'B': 0})
 
-
     data = data.dropna(axis=1, how='all')
-    
+
     return data
 
 dataset_path = "data.csv"
@@ -28,7 +27,7 @@ data = preprocess_data(data)
 data.to_csv('dataProcessato.csv', index=False)
 
 #controllo sui valori nulli
-#print(data.isnull().sum())
+print(data.isnull().sum())
 
 target_column = 'target'
 
@@ -59,20 +58,17 @@ plt.show()
 knowledge = get_breast_cancer_knowledge()
 
 X_enriched = enrich_data_with_knowledge(X, knowledge)
-#print(X_enriched.isnull().sum()) 
+'''print(X_enriched.isnull().sum()) '''
 X_enriched.to_csv('semantica.csv', index=False)
 
-# Perform supervised learning
-X_selected, y = perform_supervised_learning(X_enriched, y)
-#print(X_selected.isnull().sum())
-X_selected.to_csv('supervisionato.csv', index=False)
+X_selected, y = supervised_learning(X_enriched, y)
+'''print(X_selected.isnull().sum())
+X_selected.to_csv('supervisionato.csv', index=False)'''
 
-# Perform unsupervised clustering
 X_clustered = perform_kmeans_clustering(X_selected)
 #X_clustered_em = perform_em_clustering(X_selected)
 
 '''print(X_clustered.isnull().sum())
 X_clustered.to_csv('K_non_sup.csv', index=False)'''
 
-# Create and analyze the Bayesian Network
 create_bayesian_network(data, X_selected, y, target_column)
